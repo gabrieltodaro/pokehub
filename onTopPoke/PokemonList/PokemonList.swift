@@ -18,7 +18,7 @@ struct PokemonList: View {
                 NavigationLink(value: Router.pokemon(index: index, species: specie)) {
                     PokemonListRow(
                         index: index,
-                        specie: specie
+                        species: specie
                     )
                     .onAppear {
                         if specie == viewModel.species.last, !viewModel.isLoading {

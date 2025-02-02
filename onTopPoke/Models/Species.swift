@@ -11,4 +11,8 @@ struct Species: Decodable, Hashable, Identifiable {
     var id: String { name }
     let name: String
     let url: URL
+    
+    func imageURL(for index: Int) -> URL {
+        URL(string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/\(index + 1).png")!
+    }
 }

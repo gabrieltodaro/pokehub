@@ -9,17 +9,14 @@ import SwiftUI
 
 struct PokemonListRow: View {
     let index: Int
-    let specie: Species
-    var imageURL: URL {
-        URL(string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/\(index + 1).png")!
-    }
+    let species: Species
     
     var body: some View {
         HStack {
-            CachedAsyncImage(url: imageURL)
+            CachedAsyncImage(url: species.imageURL(for: index))
                 .frame(width: 84, height: 84)
             
-            Text(specie.name.capitalized)
+            Text(species.name.capitalized)
                 .bold()
             
             Spacer()

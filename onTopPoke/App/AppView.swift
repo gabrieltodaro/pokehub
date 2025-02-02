@@ -7,8 +7,13 @@
 
 import SwiftUI
 
+enum Router: Hashable {
+    case pokemon(index: Int, species: Species)
+}
+
 struct AppView: View {
     @State private var router: [Router] = []
+    
     var body: some View {
         NavigationStack(path: $router) {
             PokemonList(

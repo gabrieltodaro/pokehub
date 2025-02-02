@@ -32,8 +32,34 @@ final class RequestPokemonHandler: RequestHandling {
                 throw error
             }
             
-        default:
-            throw APIError.needImplementation
+        case .getSpecies(_):
+            let urlRequest = route.asRequest()
+            
+            do {
+                let (data, _) = try await URLSession.shared.data(for: urlRequest)
+                let response = try JSONDecoder().decode(SpeciesDetails.self, from: data)
+                
+                if let typedResponse = response as? T {
+                    return typedResponse
+                } else {
+                    throw APIError.decodingFailed
+                }
+            }
+            
+        case .getEvolutionChain(_):
+            let urlRequest = route.asRequest()
+            
+            do {
+                let (data, _) = try await URLSession.shared.data(for: urlRequest)
+                let response = try JSONDecoder().decode(EvolutionChainDetails.self, from: data)
+                
+                if let typedResponse = response as? T {
+                    return typedResponse
+                } else {
+                    throw APIError.decodingFailed
+                }
+            }
+            
         }
     }
 }

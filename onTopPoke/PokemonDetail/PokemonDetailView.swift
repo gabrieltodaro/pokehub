@@ -6,18 +6,52 @@
 //
 
 import SwiftUI
-
-/// Details view showing the evolution chain of a Pokémon (WIP)
-///
-/// It now only shows a placeholder image, make it so that it also shows the evolution chain of the selected Pokémon, in whatever way you think works best.
-/// The evolution chain url can be fetched using the endpoint `APIRouter.getSpecies(URL)` (returns type `SpeciesDetails`), and the evolution chain details through `APIRouter.getEvolutionChain(URL)` (returns type `EvolutionChainDetails`).
-/// Requires a working `RequestHandler`
 struct PokemonDetailView: View {
     let index: Int
     let species: Species
-    
+
+    @StateObject private var viewModel = PokemonDetailViewModel()
+
     var body: some View {
-        Text("#\(index + 1)")
-        Text("Hello \(species.name.capitalized)")
+        VStack {
+            Spacer()
+
+            HStack {
+                ForEach(viewModel.evolutionChain, id: \.id) { speciesDetail in
+                    VStack {
+                        CachedAsyncImage(url: speciesDetail.imageURL(for: speciesDetail.id))
+                            .scaledToFit()
+                            .frame(width: 80, height: 80)
+                            .clipShape(Circle())
+                            .overlay(Circle().stroke(speciesDetail.name == self.species.name ? Color.blue : Color.gray, lineWidth: 3))
+
+                        Text(speciesDetail.name.capitalized)
+                            .font(.caption)
+                    }
+
+                    if speciesDetail != viewModel.evolutionChain.last {
+                        Image(systemName: "arrow.right")
+                            .font(.title2)
+                            .foregroundColor(.gray)
+                    }
+                }
+            }
+
+            if viewModel.isLoading {
+                ProgressView()
+            }
+
+            if let errorMessage = viewModel.errorMessage {
+                Text(errorMessage)
+                    .foregroundColor(.red)
+            }
+
+            Spacer()
+        }
+        .padding(.horizontal, 16)
+        .task {
+            await viewModel.fetchEvolutions(for: species)
+        }
+        .navigationTitle(Text("#\(index + 1) - \(species.name.capitalized)"))
     }
 }
