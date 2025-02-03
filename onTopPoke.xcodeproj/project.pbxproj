@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3D14B4FC2D50E00400BA8348 /* EvolutionCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D14B4FB2D50E00400BA8348 /* EvolutionCardView.swift */; };
 		3D3AA8FE2D4D738C0038F0F3 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D3AA8FD2D4D738A0038F0F3 /* AppView.swift */; };
 		3D3AA9002D4DAA710038F0F3 /* PokemonListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D3AA8FF2D4DAA6B0038F0F3 /* PokemonListViewModel.swift */; };
 		3D3AA9032D4DB4BD0038F0F3 /* RequestPokemonHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D3AA9022D4DB4BD0038F0F3 /* RequestPokemonHandler.swift */; };
@@ -29,6 +30,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3D14B4FB2D50E00400BA8348 /* EvolutionCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvolutionCardView.swift; sourceTree = "<group>"; };
 		3D3AA8FD2D4D738A0038F0F3 /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		3D3AA8FF2D4DAA6B0038F0F3 /* PokemonListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonListViewModel.swift; sourceTree = "<group>"; };
 		3D3AA9022D4DB4BD0038F0F3 /* RequestPokemonHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestPokemonHandler.swift; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 		3D3AA9102D4DC7160038F0F3 /* PokemonDetail */ = {
 			isa = PBXGroup;
 			children = (
+				3D14B4FB2D50E00400BA8348 /* EvolutionCardView.swift */,
 				3D3AA9162D4F007F0038F0F3 /* PokemonDetailViewModel.swift */,
 				3D3AA9112D4DC7220038F0F3 /* PokemonDetailView.swift */,
 			);
@@ -232,6 +235,7 @@
 				3D3AA9082D4DBAA60038F0F3 /* PokemonList.swift in Sources */,
 				3D3AA9172D4F007F0038F0F3 /* PokemonDetailViewModel.swift in Sources */,
 				710FC2FA2A02DBA000899EA2 /* AppDelegate.swift in Sources */,
+				3D14B4FC2D50E00400BA8348 /* EvolutionCardView.swift in Sources */,
 				710FC30F2A02DD8100899EA2 /* APIRoute.swift in Sources */,
 				3D3AA9122D4DC7250038F0F3 /* PokemonDetailView.swift in Sources */,
 				3D3AA9032D4DB4BD0038F0F3 /* RequestPokemonHandler.swift in Sources */,

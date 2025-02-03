@@ -12,6 +12,7 @@ final class PokemonListViewModel: ObservableObject {
     
     @Published private(set) var species: [Species] = []
     @Published private(set) var isLoading = false
+    @Published private(set) var errorMessage: String?
     private var nextOffset = 0
     private let limit = 20
     private var hasMoreData = true
@@ -51,13 +52,16 @@ final class PokemonListViewModel: ObservableObject {
                 hasMoreData = false
             }
             
-            try? await Task.sleep(nanoseconds: 1_000_000_000)
+            try? await Task.sleep(nanoseconds: 500_000_000)
             withAnimation {
                 isLoading = false
             }
         } catch {
-            // TODO: handle request handling failures
-            print("\(error.localizedDescription)")
+            errorMessage = "There's something wrong. Try again"
+            isLoading = false
+#if DEBUG
+            print("🚨🚨🚨 There's an error with your request: \(error.localizedDescription)")
+#endif
         }
     }
 }

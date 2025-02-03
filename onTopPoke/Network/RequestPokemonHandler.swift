@@ -8,56 +8,38 @@
 import Foundation
 
 enum APIError: Error {
-    case needImplementation
-    case invalidURL
     case decodingFailed
+    case networkError(Error)
+    
+    var errorDescription: String? {
+        switch self {
+        case .decodingFailed:
+            return "Failed to decode the response from the server."
+        case .networkError(let error):
+            return "A network error occurred: \(error.localizedDescription)"
+        }
+    }
 }
 
 final class RequestPokemonHandler: RequestHandling {    
-    func request<T>(route: APIRoute) async throws -> T {
+    func request<T: Decodable>(route: APIRoute) async throws -> T {
         switch route {
-        case .getSpeciesList(_, _):
+        case .getSpeciesList(_, _), .getSpecies(_), .getEvolutionChain(_):
             let urlRequest = route.asRequest()
             
             do {
-                let (data, _) = try await URLSession.shared.data(for: urlRequest)
-                let response = try JSONDecoder().decode(SpeciesResponse.self, from: data)
+                let (data, response) = try await URLSession.shared.data(for: urlRequest)
                 
-                if let typedResponse = response as? T {
-                    return typedResponse
-                } else {
-                    throw APIError.decodingFailed
+                if let httpResponse = response as? HTTPURLResponse, !(200...299).contains(httpResponse.statusCode) {
+                    throw APIError.networkError(NSError(domain: "HTTP Error", code: httpResponse.statusCode, userInfo: nil))
                 }
+                
+                let decodedResponse = try JSONDecoder().decode(T.self, from: data)
+                return decodedResponse
+            } catch let decodingError as DecodingError {
+                throw APIError.decodingFailed
             } catch {
-                throw error
-            }
-            
-        case .getSpecies(_):
-            let urlRequest = route.asRequest()
-            
-            do {
-                let (data, _) = try await URLSession.shared.data(for: urlRequest)
-                let response = try JSONDecoder().decode(SpeciesDetails.self, from: data)
-                
-                if let typedResponse = response as? T {
-                    return typedResponse
-                } else {
-                    throw APIError.decodingFailed
-                }
-            }
-            
-        case .getEvolutionChain(_):
-            let urlRequest = route.asRequest()
-            
-            do {
-                let (data, _) = try await URLSession.shared.data(for: urlRequest)
-                let response = try JSONDecoder().decode(EvolutionChainDetails.self, from: data)
-                
-                if let typedResponse = response as? T {
-                    return typedResponse
-                } else {
-                    throw APIError.decodingFailed
-                }
+                throw APIError.networkError(error)
             }
             
         }
